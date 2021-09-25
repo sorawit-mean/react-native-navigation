@@ -111,7 +111,12 @@
         NSString *tabBarBackgroundColor = tabsStyle[@"tabBarBackgroundColor"];
         if (tabBarBackgroundColor) {
             UIColor *color = tabBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:tabBarBackgroundColor] : nil;
-            self.tabBar.barTintColor = color;
+            if (@available(iOS 15, *)) {
+                [[UITabBar appearance] setOpaque:TRUE];
+                [[UITabBar appearance] setBackgroundColor:color];
+            } else {
+                self.tabBar.barTintColor = color;
+            }
         }
         
         NSString *tabBarTranslucent = tabsStyle[@"tabBarTranslucent"];
