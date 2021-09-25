@@ -325,18 +325,32 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         viewController.view.layer.contents = (__bridge id _Nullable)(image.CGImage);
     }
     
+    
+    NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
+    [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
+    
     NSString *navBarBackgroundColor = self.navigatorStyle[@"navBarBackgroundColor"];
     if (navBarBackgroundColor) {
         
         UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
-        viewController.navigationController.navigationBar.barTintColor = color;
+        
+        if (@available(iOS 15, *)) {
+            
+            UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+            [appearance configureWithOpaqueBackground];
+            [appearance setBackgroundColor:color];
+            [appearance setTitleTextAttributes:titleTextAttributes];
+            
+            [self.navigationController.navigationBar setStandardAppearance:appearance];
+            [self.navigationController.navigationBar setScrollEdgeAppearance:appearance];
+        } else {
+            viewController.navigationController.navigationBar.barTintColor = color;
+        }
+        
         
     } else {
         viewController.navigationController.navigationBar.barTintColor = nil;
     }
-    
-    NSMutableDictionary *titleTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarText" baseFont:[UIFont boldSystemFontOfSize:17]];
-    [self.navigationController.navigationBar setTitleTextAttributes:titleTextAttributes];
     
     NSMutableDictionary *navButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarButton"];
     NSMutableDictionary *leftNavButtonTextAttributes = [RCTHelpers textAttributesFromDictionary:self.navigatorStyle withPrefix:@"navBarLeftButton"];
