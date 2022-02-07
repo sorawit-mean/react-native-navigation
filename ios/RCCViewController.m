@@ -333,7 +333,7 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     if (navBarBackgroundColor) {
         
         UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
-        
+        #if __clang_major__ >= 13
         if (@available(iOS 15, *)) {
 
             UINavigationBarAppearance *appearance = self.navigationController.navigationBar.standardAppearance;
@@ -346,8 +346,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         } else {
             viewController.navigationController.navigationBar.barTintColor = color;
         }
-        
-        
+        #else
+        viewController.navigationController.navigationBar.barTintColor = color;
+        #endif
+
     } else {
         viewController.navigationController.navigationBar.barTintColor = nil;
     }

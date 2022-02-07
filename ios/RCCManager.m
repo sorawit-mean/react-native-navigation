@@ -300,6 +300,7 @@
     [[UINavigationBar appearance] setBackIndicatorImage:image];
     [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:image];
 
+    #if __clang_major__ >= 13
     if (@available(iOS 15, *)) {
         UINavigationBarAppearance *appearanceImage = [[UINavigationBarAppearance alloc] init];
         [appearanceImage setBackIndicatorImage:image transitionMaskImage:image];
@@ -307,7 +308,7 @@
         [[UINavigationBar appearance] setStandardAppearance:appearanceImage];
         [[UINavigationBar appearance] setScrollEdgeAppearance:appearanceImage];
     }
-
+    #endif
 }
 
 
