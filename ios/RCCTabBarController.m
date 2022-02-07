@@ -123,6 +123,12 @@
         if (tabBarTranslucent) {
             self.tabBar.translucent = [tabBarTranslucent boolValue] ? YES : NO;
         }
+
+        if (@available(iOS 15.0, *)) {
+            UITabBarAppearance *tabBarAppearance = [[UITabBarAppearance alloc] init];
+            [tabBarAppearance configureWithDefaultBackground];
+            [[UITabBar appearance] setScrollEdgeAppearance:tabBarAppearance];
+        }
         
         NSString *tabBarHideShadow = tabsStyle[@"tabBarHideShadow"];
         if (tabBarHideShadow) {

@@ -335,14 +335,14 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
         UIColor *color = navBarBackgroundColor != (id)[NSNull null] ? [RCTConvert UIColor:navBarBackgroundColor] : nil;
         
         if (@available(iOS 15, *)) {
-            
-            UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+
+            UINavigationBarAppearance *appearance = self.navigationController.navigationBar.standardAppearance;
             [appearance configureWithOpaqueBackground];
             [appearance setBackgroundColor:color];
             [appearance setTitleTextAttributes:titleTextAttributes];
             
             [self.navigationController.navigationBar setStandardAppearance:appearance];
-            [self.navigationController.navigationBar setScrollEdgeAppearance:appearance];
+            [self.navigationController.navigationBar setScrollEdgeAppearance:self.navigationController.navigationBar.standardAppearance];
         } else {
             viewController.navigationController.navigationBar.barTintColor = color;
         }
